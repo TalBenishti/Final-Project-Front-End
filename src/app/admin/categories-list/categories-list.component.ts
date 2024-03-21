@@ -2,11 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { categories } from '../../shared/data/categories';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
-import { Category } from '../../shared/model/category';
-import { CategoriesService } from '../services/categories.service';
+import { Category } from '../../../shared/model/category';
+import { CategoriesService } from '../../services/categories.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteCategoryDialogComponent } from '../delete-category-dialog/delete-category-dialog.component';
 
