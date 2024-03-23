@@ -1,8 +1,8 @@
-import { CategoriesService } from './../services/categories.service';
+import { CategoriesService } from '../../services/categories.service';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Language } from '../../shared/model/language';
-import { Category } from '../../shared/model/category';
+import { Language } from '../../../shared/model/language';
+import { Category } from '../../../shared/model/category';
 import { FormsModule, NgModelGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { TranslatedWord } from '../../shared/model/translated-word';
+import { TranslatedWord } from '../../../shared/model/translated-word';
 
 @Component({
   selector: 'app-category-form',

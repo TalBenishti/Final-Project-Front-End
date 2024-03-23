@@ -1,1 +1,6 @@
-<p> gameCategories works!</p>,
+<h1>Let's Play</h1>
+<div class="categories-container">
+    <div *ngFor="let g of allGameCategories" class="category-card">
+        <app-game-category-card [currentGameCategory]="g"></app-game-category-card>
+    </div>
+</div>

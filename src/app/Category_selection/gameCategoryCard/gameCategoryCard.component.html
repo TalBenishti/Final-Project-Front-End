@@ -1,1 +1,10 @@
-<p>gameCategoryCard works!</p>,
+<mat-card class="card-container" (click)="openChooseGameDialog(currentGameCategory)">
+    <mat-card-title>
+        {{ currentGameCategory?.name }}
+    </mat-card-title>
+    <mat-card-content>
+        <div *ngIf="currentGameCategory?.words?.length">
+            words: {{ currentGameCategory?.words?.length }}
+        </div>
+    </mat-card-content>
+</mat-card>
