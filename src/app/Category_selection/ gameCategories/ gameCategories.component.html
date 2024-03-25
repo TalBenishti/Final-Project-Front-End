@@ -1,6 +1,6 @@
-<h1>Let's Play</h1>
+<h1 class="title">Let's Play</h1>
 <div class="categories-container">
-    <div *ngFor="let g of allGameCategories" class="category-card">
+    <div *ngFor="let g of allGameCategories">
         <app-game-category-card [currentGameCategory]="g"></app-game-category-card>
     </div>
 </div>

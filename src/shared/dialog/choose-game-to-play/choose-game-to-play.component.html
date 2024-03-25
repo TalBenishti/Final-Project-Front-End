@@ -1,10 +1,10 @@
 <h2>Choose Game To Play</h2>
 <mat-form-field>
   <mat-label>Select Game</mat-label>
-  <!-- <mat-select [(value)]="selectedGame">
-    <mat-option *ngFor="let game of games" [value]="game.id">{{ game.name }}</mat-option>
-  </mat-select> -->
+  <mat-select [(ngModel)]="selectedGame" (selectionChange)="onGameSelectionChange()">
+    <mat-option *ngFor="let game of gameList" [value]="game">{{ game.name }}</mat-option>
+  </mat-select>
 </mat-form-field>
-<!-- <p>Difficulty: {{ selectedGameDifficulty }}</p> -->
-<!-- <p>Description: {{ selectedGameDescription }}</p> -->
-<button mat-raised-button color="primary" (click)="playGame()">Play</button>
+<p *ngIf="selectedGame">Difficulty: {{ selectedGame.difficulty }}</p>
+<p *ngIf="selectedGame">Description: {{ selectedGame.description }}</p>
+<button mat-raised-button color="primary" (click)="playGame()" [disabled]="!selectedGame">Play</button>

@@ -1,3 +1,8 @@
 .card-container {
   min-height: 68px;
+  padding: 20px;
+  margin: 10px;
+  background-color: #3f51b5; 
+  color: white; 
+  text-align: center; 
 }
