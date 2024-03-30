@@ -25,10 +25,10 @@ export class GameCategoryCardComponent {
    constructor(private dialog: MatDialog) {}
 
 
-   openChooseGameDialog(category: any): void {
+   openChooseGameDialog(): void {
     const dialogRef = this.dialog.open(ChooseGameToPlayComponent, {
       width: '400px', 
-      data: { category },
+      data: this.currentGameCategory,
     });
 
     dialogRef.afterClosed().subscribe(result => {

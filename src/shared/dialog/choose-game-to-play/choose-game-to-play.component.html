@@ -7,4 +7,4 @@
 </mat-form-field>
 <p *ngIf="selectedGame">Difficulty: {{ selectedGame.difficulty }}</p>
 <p *ngIf="selectedGame">Description: {{ selectedGame.description }}</p>
-<button mat-raised-button color="primary" (click)="playGame()" [disabled]="!selectedGame">Play</button>
+<button mat-raised-button mat-dialog-close color="primary" [routerLink]="[selectedGame?.url,data.id]" [disabled]="!selectedGame">Play</button>
