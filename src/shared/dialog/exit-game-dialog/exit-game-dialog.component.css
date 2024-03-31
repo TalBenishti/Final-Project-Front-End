@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+.exit-dialog-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.button-container {
+  margin-top: 20px;
+}

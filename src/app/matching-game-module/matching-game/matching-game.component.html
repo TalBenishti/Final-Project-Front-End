@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="top-left">
+        <app-exit-game></app-exit-game>
+    </div>
+    <div class="centered">
+        <h1>Matching Game - {{ gameWordList?.name }}</h1>
+    </div>
+    <div *ngIf="gameWordList && gameWordList.words.length < 5">
+        <p>To play this game, the category must have at least 5 words</p>
+        <button mat-raised-button mat-dialog-close color="primary" (click)="navigateToLetsPlay()">Change Category</button>
+    </div>
+</div>

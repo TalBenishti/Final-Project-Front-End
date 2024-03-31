@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+.normal {
+  color: #000000; /* Normal color */
+}
+
+.selected {
+  color: #1e00ff; /* Selected color */
+}
+
+.disabled {
+  color: #e0e0e0; /* Disabled color */
+}
