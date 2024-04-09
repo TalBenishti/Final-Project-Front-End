@@ -6,6 +6,10 @@ import { Category } from '../../../shared/model/category';
 import { Router } from '@angular/router';
 import { TranslatedWord } from '../../../shared/model/translated-word';
 import { WordStatus } from '../../../shared/model/word-status';
+import { WordDisplayComponent } from '../word-display/word-display.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatchResultDialogComponent } from '../match-result-dialog/match-result-dialog.component';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-matching-game',
@@ -13,6 +17,8 @@ import { WordStatus } from '../../../shared/model/word-status';
   imports: [
     CommonModule,
     ExitGameComponent,
+    WordDisplayComponent,
+    MatCardModule
   ],
   templateUrl: './matching-game.component.html',
   styleUrl: './matching-game.component.css',
@@ -28,13 +34,14 @@ export class MatchingGameComponent implements OnInit {
   attempts: number = 0;
   successes: number = 0;
   currentPoints: number = 0;
-  pointsForCurrentRound: number = 0;
+  pointsForCurrentRound: number = 16;
+  tempSelectedSourceIndex: number = -1;
+  tempTargetSourceIndex: number = -1;
 
-  constructor(private categoriesService: CategoriesService, private router: Router) { }
+  constructor(private categoriesService: CategoriesService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.gameWordList = this.categoriesService.get(Number(this.categoryId));
-    console.log('this.gameWordList', this.gameWordList?.words)
     if (this.gameWordList && this.gameWordList.words.length > 5) {
       this.createWordsLists()
     }
@@ -60,10 +67,60 @@ export class MatchingGameComponent implements OnInit {
       } while (this.targetWords[randomIndex]);
       this.targetWords[randomIndex] = pair.target;
     });
-    console.log(this.fiveRandomPairCards)
-    console.log(this.targetWords)
   }
 
+  handleCardClicked(index: number, type: 'source' | 'target'): void {
+    if (type === 'source') {
+      if (this.tempSelectedSourceIndex !== -1) {
+        this.sourceWordStatuses[this.tempSelectedSourceIndex] = WordStatus.Normal;
+      }
+      this.sourceWordStatuses[index] = WordStatus.Selected;
+      this.tempSelectedSourceIndex = index;
+    } else if (type === 'target') {
+      if (this.tempTargetSourceIndex !== -1) {
+        this.targetWordStatuses[this.tempTargetSourceIndex] = WordStatus.Normal;
+      }
+      this.targetWordStatuses[index] = WordStatus.Selected;
+      this.tempTargetSourceIndex = index;
+    }
+
+    if (this.tempSelectedSourceIndex !== -1 && this.tempTargetSourceIndex !== -1) {
+      this.attempts++;
+      this.checkAnswer(this.tempSelectedSourceIndex, this.tempTargetSourceIndex);
+    }
+  }
+
+  checkAnswer(sourceIndex: number, targetIndex: number): void {
+    const sourceWord = this.fiveRandomPairCards[sourceIndex].target;
+    const targetWord = this.targetWords[targetIndex];
+
+    if (sourceWord === targetWord) {
+      this.openDialog('Great job!', 'Continue');
+      this.sourceWordStatuses[sourceIndex] = WordStatus.Disabled;
+      this.targetWordStatuses[targetIndex] = WordStatus.Disabled;
+      this.tempSelectedSourceIndex = -1
+      this.tempTargetSourceIndex = -1
+      this.currentPoints+=this.pointsForCurrentRound;
+      this.pointsForCurrentRound=16;
+      this.successes++;
+    } else {
+      this.pointsForCurrentRound-=2;
+      this.openDialog('Incorrect, try again', 'Got it');
+      this.sourceWordStatuses[sourceIndex] = WordStatus.Normal;
+      this.targetWordStatuses[targetIndex] = WordStatus.Normal;
+      this.tempSelectedSourceIndex = -1
+      this.tempTargetSourceIndex = -1
+    }
+  }
+
+  openDialog(message: string, buttonText: string): void {
+    const dialogRef = this.dialog.open(MatchResultDialogComponent, {
+      data: { message, buttonText },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
   navigateToLetsPlay(): void {
     this.router.navigate(['/lets-play']);
   }

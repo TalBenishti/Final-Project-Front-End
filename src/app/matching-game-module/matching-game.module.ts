@@ -10,7 +10,6 @@ import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
     declarations: [
-        WordDisplayComponent,
         MatchResultDialogComponent,
         // ExitGameComponent, 
     ],

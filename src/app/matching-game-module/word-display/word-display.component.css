@@ -1,14 +1,34 @@
 :host {
   display: block;
 }
+
 .normal {
-  color: #000000; /* Normal color */
+  color: #000000;
+  /* Normal color */
 }
 
 .selected {
-  color: #1e00ff; /* Selected color */
+  color: #1e00ff;
+  /* Selected color */
 }
 
 .disabled {
-  color: #e0e0e0; /* Disabled color */
+  color: #e0e0e0;
+  /* Disabled color */
+}
+
+.word-card {
+  width: 200px; 
+  height: 50px; 
+  margin: 10px; 
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.word-card p {
+  margin: 0;
+  text-align: center;
+  line-height: 1.5;
 }

@@ -1,6 +1,7 @@
 :host {
   display: block;
 }
+
 .container {
   display: flex;
   flex-direction: column;
@@ -12,10 +13,29 @@
 
 .top-left {
   align-self: flex-start;
-  margin-left: 20px; /* Adjust margin as needed */
+  margin-left: 20px;
+  /* Adjust margin as needed */
 }
 
+.top-right {
+  align-self: flex-end;
+  margin: 20px;
+}
 .centered {
   text-align: center;
 }
 
+.col-md-6 {
+  display: table-cell;
+}
+
+/* Custom styles for the matching game component */
+.card-container {
+  margin-bottom: 20px;
+}
+
+.card-container .card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}

@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="word-card" (click)="cardClicked.emit()">
   <p [ngClass]="getStatusClass()">
     {{ word }}
   </p>

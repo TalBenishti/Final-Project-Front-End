@@ -1,3 +1,10 @@
 .example-spacer {
   flex: 1 1 auto;
 }
+.little-linguist {
+  color: #ffffff; /* Text color */
+  font-size: 18px; /* Font size */
+  font-weight: bold; /* Font weight */
+  text-decoration: none; /* Remove underline */
+  margin-right: 16px; /* Add some margin */
+}

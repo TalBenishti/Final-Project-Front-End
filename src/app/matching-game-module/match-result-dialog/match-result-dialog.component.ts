@@ -1,14 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-match-result-dialog',
-  // standalone: true,
-  // imports: [
-  //   CommonModule,
-  // ],
   templateUrl: './match-result-dialog.component.html',
-  styleUrl: './match-result-dialog.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./match-result-dialog.component.css'],
 })
-export class MatchResultDialogComponent { }
+export class MatchResultDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<MatchResultDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { message: string; buttonText: string }
+  ) {}
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+}

@@ -22,6 +22,5 @@ export class GameCategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.allGameCategories = this.categoriesService.list()
-    console.log('this.allGameCategories', this.allGameCategories);
   }
 }

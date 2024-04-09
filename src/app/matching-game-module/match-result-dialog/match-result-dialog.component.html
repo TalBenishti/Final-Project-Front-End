@@ -1,4 +1,5 @@
 <div>
-    <h2>Match Result</h2>
-    <p>{{ 'matchMessage' }}</p>
-  </div>
+  <h2>Match Result</h2>
+  <p>{{ data.message }}</p>
+  <button mat-raised-button color="primary" (click)="closeDialog()">{{ data.buttonText }}</button>
+</div>
