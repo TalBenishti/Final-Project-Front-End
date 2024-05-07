@@ -1,0 +1,36 @@
+.mat-dialog-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+h2 {
+  align-self: center;
+}
+
+.mat-dialog-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.mat-dialog-content {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+p {
+  text-align-last: center;
+}
+.mat-dialog-actions {
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+  
+}
+
+.mat-mdc-dialog-actions {
+  justify-content: center;
+}

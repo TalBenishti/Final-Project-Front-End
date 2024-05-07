@@ -12,8 +12,8 @@ export class ExitGameDialogComponent {
     private router: Router) { }
 
   confirmExit(): void {
-    this.router.navigateByUrl('/lets-play'); 
-    this.dialogRef.close(); 
+    this.router.navigateByUrl('/lets-play');
+    this.dialogRef.close();
   }
 
   closeDialog(): void {

@@ -8,15 +8,15 @@ import { ExitGameDialogComponent } from '../../shared/dialog/exit-game-dialog/ex
   selector: 'app-exit-game',
   standalone: true,
   imports: [
-  MatIconModule
+    MatIconModule
   ],
   templateUrl: './exit-game.component.html',
   styleUrl: './exit-game.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExitGameComponent { 
+export class ExitGameComponent {
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
   openExitGameDialog(): void {
     this.dialog.open(ExitGameDialogComponent, {

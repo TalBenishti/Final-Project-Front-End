@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ExitGameComponent } from '../../exit-game/exit-game.component';
-import { CategoriesService } from '../../services/categories.service';
-import { Category } from '../../../shared/model/category';
+import { ExitGameComponent } from '../../../exit-game/exit-game.component';
+import { CategoriesService } from '../../../services/categories.service';
+import { Category } from '../../../../shared/model/category';
 import { Router } from '@angular/router';
-import { TranslatedWord } from '../../../shared/model/translated-word';
-import { WordStatus } from '../../../shared/model/word-status';
+import { TranslatedWord } from '../../../../shared/model/translated-word';
+import { WordStatus } from '../../../../shared/model/word-status';
 import { WordDisplayComponent } from '../word-display/word-display.component';
 import { MatDialog } from '@angular/material/dialog';
-import { MatchResultDialogComponent } from '../match-result-dialog/match-result-dialog.component';
 import { MatCardModule } from '@angular/material/card';
+import { GameResultDialogComponent } from '../../../../shared/dialog/game-result-dialog/game-result-dialog.component';
+import { CurrentPointsComponent } from '../../../current-points/current-points.component';
+import { GamePlayed, GamesPointsService } from '../../../services/gamesPoints.service';
 
 @Component({
   selector: 'app-matching-game',
@@ -17,7 +19,9 @@ import { MatCardModule } from '@angular/material/card';
   imports: [
     CommonModule,
     ExitGameComponent,
+    GameResultDialogComponent,
     WordDisplayComponent,
+    CurrentPointsComponent,
     MatCardModule
   ],
   templateUrl: './matching-game.component.html',
@@ -34,11 +38,11 @@ export class MatchingGameComponent implements OnInit {
   attempts: number = 0;
   successes: number = 0;
   currentPoints: number = 0;
-  pointsForCurrentRound: number = 16;
+  pointsForCurrentRound: number = 20;
   tempSelectedSourceIndex: number = -1;
   tempTargetSourceIndex: number = -1;
 
-  constructor(private categoriesService: CategoriesService, private router: Router, private dialog: MatDialog) { }
+  constructor(private categoriesService: CategoriesService, private router: Router, private dialog: MatDialog, private gamesPointsService: GamesPointsService) { }
 
   ngOnInit(): void {
     this.gameWordList = this.categoriesService.get(Number(this.categoryId));
@@ -100,22 +104,30 @@ export class MatchingGameComponent implements OnInit {
       this.targetWordStatuses[targetIndex] = WordStatus.Disabled;
       this.tempSelectedSourceIndex = -1
       this.tempTargetSourceIndex = -1
-      this.currentPoints+=this.pointsForCurrentRound;
-      this.pointsForCurrentRound=16;
+      this.currentPoints += this.pointsForCurrentRound;
+      this.pointsForCurrentRound = 20;
       this.successes++;
     } else {
-      this.pointsForCurrentRound-=2;
+      if (this.pointsForCurrentRound > 0) {
+        this.pointsForCurrentRound -= 2;
+      }
       this.openDialog('Incorrect, try again', 'Got it');
       this.sourceWordStatuses[sourceIndex] = WordStatus.Normal;
       this.targetWordStatuses[targetIndex] = WordStatus.Normal;
       this.tempSelectedSourceIndex = -1
       this.tempTargetSourceIndex = -1
     }
+    if (this.successes === 5) {
+      const gameData = new GamePlayed(Number(this.categoryId), 1, new Date(), this.currentPoints);
+      this.gamesPointsService.addGamePlayed(gameData);
+    }
   }
 
   openDialog(message: string, buttonText: string): void {
-    const dialogRef = this.dialog.open(MatchResultDialogComponent, {
+    const dialogRef = this.dialog.open(GameResultDialogComponent, {
       data: { message, buttonText },
+      height: '200px',
+      width: '250px',
     });
 
     dialogRef.afterClosed().subscribe(result => {

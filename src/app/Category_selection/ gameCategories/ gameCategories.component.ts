@@ -5,15 +5,15 @@ import { Category } from '../../../shared/model/category';
 import { GameCategoryCardComponent } from "../gameCategoryCard/gameCategoryCard.component";
 
 @Component({
-    selector: 'app--game-categories',
-    standalone: true,
-    templateUrl: './ gameCategories.component.html',
-    styleUrl: './ gameCategories.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        GameCategoryCardComponent
-    ]
+  selector: 'app--game-categories',
+  standalone: true,
+  templateUrl: './ gameCategories.component.html',
+  styleUrl: './ gameCategories.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    GameCategoryCardComponent
+  ]
 })
 export class GameCategoriesComponent implements OnInit {
   allGameCategories: Category[] = [];

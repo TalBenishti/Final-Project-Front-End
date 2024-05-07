@@ -17,17 +17,17 @@ import { ChooseGameToPlayComponent } from '../../../shared/dialog/choose-game-to
   styleUrl: './gameCategoryCard.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameCategoryCardComponent { 
+export class GameCategoryCardComponent {
 
   @Input()
-   currentGameCategory? : Category;
+  currentGameCategory?: Category;
 
-   constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
 
-   openChooseGameDialog(): void {
+  openChooseGameDialog(): void {
     const dialogRef = this.dialog.open(ChooseGameToPlayComponent, {
-      width: '400px', 
+      width: '400px',
       data: this.currentGameCategory,
     });
 

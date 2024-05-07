@@ -3,7 +3,7 @@
         <app-exit-game></app-exit-game>
     </div>
     <div class="top-right">
-        <p>Current Points: {{ currentPoints }}</p>
+        <app-current-points [currentPoints]="currentPoints"></app-current-points>
     </div>
     <div class="centered">
         <h1>Matching Game - {{ gameWordList?.name }}</h1>

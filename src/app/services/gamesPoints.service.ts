@@ -1,4 +1,3 @@
-// games-points.service.ts
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -6,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class GamesPointsService {
   private storageKey = 'littleLinguistData';
-  constructor() {}
+  constructor() { }
 
   list(): GamePlayed[] {
     const data = localStorage.getItem(this.storageKey);
@@ -26,5 +25,5 @@ export class GamePlayed {
     public gameId: number,
     public date: Date,
     public points: number
-  ) {}
+  ) { }
 }

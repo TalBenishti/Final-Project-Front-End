@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="top-left">
+        <app-exit-game></app-exit-game>
+    </div>
+    <div class="top-right">
+        <app-current-points [currentPoints]="currentPoints"></app-current-points>
+    </div>
+    <div class="centered">
+        <h1>Messy Words Game - {{ gameWordList?.name }}</h1>
+    </div>
+    <div *ngIf="shuffledList && round !== shuffledList.words.length">
+        <p>origin: {{shuffledList.words[round].target}}</p>
+        <p>{{shuffledWordList[round]}}</p>
+        <div class="row">
+            <p>Guess:</p>
+            <input matInput [(ngModel)]="wordGuess" name="wordGuess">
+        </div>
+        <button mat-raised-button mat-dialog-close color="primary" (click)="wordGuess = ''">Reset</button>
+        <button mat-raised-button mat-dialog-close color="primary" (click)="checkGuess()">Submit</button>
+        <mat-progress-bar mode="determinate" [value]="(round) / shuffledWordList.length * 100"></mat-progress-bar>
+    </div>
+    <div *ngIf="shuffledList && round === shuffledList.words.length">
+        <p>Current Points: {{ currentPoints }}</p>
+        <div *ngFor="let pair of shuffledList.words; let i = index">
+            <p>origin: {{pair.origin}} target: {{pair.target}}
+                <span *ngIf="successesGuesses[i] === true"><mat-icon>check</mat-icon></span>
+                <span *ngIf="successesGuesses[i] === false"><mat-icon>close</mat-icon></span>
+            </p>
+        </div>
+    </div>
+</div>

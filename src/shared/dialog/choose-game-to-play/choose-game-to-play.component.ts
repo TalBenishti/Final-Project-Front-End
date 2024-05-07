@@ -13,7 +13,7 @@ import { Category } from '../../model/category';
 @Component({
   selector: 'app-choose-game-to-play',
   standalone: true,
-  imports: [FormsModule, MatFormFieldModule, MatSelectModule, CommonModule,MatButtonModule,MatDialogModule, RouterModule],
+  imports: [FormsModule, MatFormFieldModule, MatSelectModule, CommonModule, MatButtonModule, MatDialogModule, RouterModule],
   templateUrl: './choose-game-to-play.component.html',
   styleUrl: './choose-game-to-play.component.css'
 })
@@ -23,7 +23,7 @@ export class ChooseGameToPlayComponent implements OnInit {
   selectedGame: GameProfile | undefined;
 
   constructor(private gamesInformationService: GamesInformationService,
-             @Inject(MAT_DIALOG_DATA) public data: Category) { }
+    @Inject(MAT_DIALOG_DATA) public data: Category) { }
 
   ngOnInit(): void {
     this.gameList = this.gamesInformationService.getGames();

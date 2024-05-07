@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { WordStatus } from '../../../shared/model/word-status';
+import { WordStatus } from '../../../../shared/model/word-status';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 
@@ -16,8 +16,8 @@ import { CommonModule } from '@angular/common';
 
 export class WordDisplayComponent {
   @Input() word: string | undefined;
-  @Input() status: WordStatus = WordStatus.Normal; 
-  @Output() cardClicked: EventEmitter<void> = new EventEmitter<void>(); 
+  @Input() status: WordStatus = WordStatus.Normal;
+  @Output() cardClicked: EventEmitter<void> = new EventEmitter<void>();
 
   getStatusClass(): string {
     switch (this.status) {

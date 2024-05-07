@@ -10,8 +10,8 @@ describe('ChooseGameToPlayComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ChooseGameToPlayComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ChooseGameToPlayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
