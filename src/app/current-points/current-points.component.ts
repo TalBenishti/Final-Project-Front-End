@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-current-points',
@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   ],
   templateUrl: './current-points.component.html',
   styleUrl: './current-points.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CurrentPointsComponent {
   @Input() currentPoints: number = 0;

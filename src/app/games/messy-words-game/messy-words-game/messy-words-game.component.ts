@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ExitGameComponent } from "../../../exit-game/exit-game.component";
 import { CurrentPointsComponent } from "../../../current-points/current-points.component";
 import { Category } from '../../../../shared/model/category';
@@ -11,13 +11,13 @@ import { GameResultDialogComponent } from '../../../../shared/dialog/game-result
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { GamePlayed, GamesPointsService } from '../../../services/gamesPoints.service';
+import { TimerComponent } from "../../../timer/timer.component";
 
 @Component({
   selector: 'app-messy-words-game',
   standalone: true,
   templateUrl: './messy-words-game.component.html',
   styleUrl: './messy-words-game.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormsModule,
     CommonModule,
@@ -25,7 +25,8 @@ import { GamePlayed, GamesPointsService } from '../../../services/gamesPoints.se
     CurrentPointsComponent,
     GameResultDialogComponent,
     MatIconModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    TimerComponent
   ]
 })
 export class MessyWordsGameComponent implements OnInit {
@@ -38,6 +39,10 @@ export class MessyWordsGameComponent implements OnInit {
   successesGuesses: boolean[] = [];
   currentPoints: number = 0;
   wordGuess: string = '';
+  gameDuration: number = 120;
+  timeLeft: number = 0;
+  gameEnd: boolean = false;
+
   constructor(private categoriesService: CategoriesService, private router: Router, private dialog: MatDialog, private gamesPointsService: GamesPointsService) { }
 
   ngOnInit(): void {
@@ -89,8 +94,7 @@ export class MessyWordsGameComponent implements OnInit {
       if (this.successesGuesses.filter(g => g === true).length === this.round) {
         this.currentPoints = 100;
       }
-      const gameData = new GamePlayed(Number(this.categoryId), 2, new Date(), this.currentPoints);
-      this.gamesPointsService.addGamePlayed(gameData);
+      this.endGame();
     }
   }
 
@@ -104,7 +108,29 @@ export class MessyWordsGameComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+
   navigateToLetsPlay(): void {
     this.router.navigate(['/lets-play']);
+  }
+
+  onTimeLeft(timeLeft: number): void {
+    console.log(timeLeft)
+    this.timeLeft = timeLeft;
+    if (this.timeLeft <= 0) {
+      this.endGame();
+    }
+  }
+
+  endGame(): void {
+    const gameData = new GamePlayed(
+      Number(this.categoryId),
+      2,
+      new Date(),
+      this.currentPoints,
+      this.timeLeft,
+      this.gameDuration - this.timeLeft
+    );
+    this.gameEnd=true;
+    this.gamesPointsService.addGamePlayed(gameData);
   }
 }

@@ -4,11 +4,13 @@
     </div>
     <div class="top-right">
         <app-current-points [currentPoints]="currentPoints"></app-current-points>
+        <app-timer *ngIf="!gameEnd" [duration]="gameDuration" (reportTimeLeft)="onTimeLeft($event)"></app-timer>
     </div>
     <div class="centered">
         <h1>Messy Words Game - {{ gameWordList?.name }}</h1>
     </div>
-    <div *ngIf="shuffledList && round !== shuffledList.words.length">
+    <div *ngIf="shuffledList && !gameEnd">
+
         <p>origin: {{shuffledList.words[round].target}}</p>
         <p>{{shuffledWordList[round]}}</p>
         <div class="row">
@@ -19,9 +21,9 @@
         <button mat-raised-button mat-dialog-close color="primary" (click)="checkGuess()">Submit</button>
         <mat-progress-bar mode="determinate" [value]="(round) / shuffledWordList.length * 100"></mat-progress-bar>
     </div>
-    <div *ngIf="shuffledList && round === shuffledList.words.length">
+    <div *ngIf="gameEnd">
         <p>Current Points: {{ currentPoints }}</p>
-        <div *ngFor="let pair of shuffledList.words; let i = index">
+        <div *ngFor="let pair of shuffledList?.words; let i = index">
             <p>origin: {{pair.origin}} target: {{pair.target}}
                 <span *ngIf="successesGuesses[i] === true"><mat-icon>check</mat-icon></span>
                 <span *ngIf="successesGuesses[i] === false"><mat-icon>close</mat-icon></span>

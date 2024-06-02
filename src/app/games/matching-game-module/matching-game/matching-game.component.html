@@ -4,6 +4,7 @@
     </div>
     <div class="top-right">
         <app-current-points [currentPoints]="currentPoints"></app-current-points>
+        <app-timer  *ngIf="gameWordList && gameWordList.words.length >= 5 && !gameEnd" [duration]="gameDuration" (reportTimeLeft)="onTimeLeft($event)"></app-timer>
     </div>
     <div class="centered">
         <h1>Matching Game - {{ gameWordList?.name }}</h1>
@@ -13,7 +14,7 @@
         <button mat-raised-button mat-dialog-close color="primary" (click)="navigateToLetsPlay()">Change
             Category</button>
     </div>
-    <div *ngIf="gameWordList && gameWordList.words.length >= 5  && successes !== 5">
+    <div *ngIf="gameWordList && gameWordList.words.length >= 5  && successes !== 5 && !gameEnd">
         <div class="row">
             <div class="col-md-6">
                 <!-- First column -->
@@ -35,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="successes === 5">
+    <div *ngIf="gameEnd">
             <p>Number of Attempts: {{ attempts }}</p>
             <p>Current Points: {{ currentPoints }}</p>
             <div *ngFor="let pair of fiveRandomPairCards">

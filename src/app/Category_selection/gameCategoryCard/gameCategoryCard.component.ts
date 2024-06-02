@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Category } from '../../../shared/model/category';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,7 +15,6 @@ import { ChooseGameToPlayComponent } from '../../../shared/dialog/choose-game-to
   ],
   templateUrl: './gameCategoryCard.component.html',
   styleUrl: './gameCategoryCard.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameCategoryCardComponent {
 

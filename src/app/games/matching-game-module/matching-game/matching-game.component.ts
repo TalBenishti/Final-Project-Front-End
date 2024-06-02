@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ExitGameComponent } from '../../../exit-game/exit-game.component';
 import { CategoriesService } from '../../../services/categories.service';
 import { Category } from '../../../../shared/model/category';
@@ -12,21 +12,22 @@ import { MatCardModule } from '@angular/material/card';
 import { GameResultDialogComponent } from '../../../../shared/dialog/game-result-dialog/game-result-dialog.component';
 import { CurrentPointsComponent } from '../../../current-points/current-points.component';
 import { GamePlayed, GamesPointsService } from '../../../services/gamesPoints.service';
+import { TimerComponent } from "../../../timer/timer.component";
 
 @Component({
   selector: 'app-matching-game',
   standalone: true,
+  templateUrl: './matching-game.component.html',
+  styleUrl: './matching-game.component.css',
   imports: [
     CommonModule,
     ExitGameComponent,
     GameResultDialogComponent,
     WordDisplayComponent,
     CurrentPointsComponent,
-    MatCardModule
-  ],
-  templateUrl: './matching-game.component.html',
-  styleUrl: './matching-game.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    MatCardModule,
+    TimerComponent
+  ]
 })
 export class MatchingGameComponent implements OnInit {
   @Input() categoryId: string = '';
@@ -41,12 +42,15 @@ export class MatchingGameComponent implements OnInit {
   pointsForCurrentRound: number = 20;
   tempSelectedSourceIndex: number = -1;
   tempTargetSourceIndex: number = -1;
+  gameDuration: number = 60;
+  timeLeft: number = 0;
+  gameEnd: boolean = false;
 
   constructor(private categoriesService: CategoriesService, private router: Router, private dialog: MatDialog, private gamesPointsService: GamesPointsService) { }
 
   ngOnInit(): void {
     this.gameWordList = this.categoriesService.get(Number(this.categoryId));
-    if (this.gameWordList && this.gameWordList.words.length > 5) {
+    if (this.gameWordList && this.gameWordList.words.length >= 5) {
       this.createWordsLists()
     }
   }
@@ -118,8 +122,7 @@ export class MatchingGameComponent implements OnInit {
       this.tempTargetSourceIndex = -1
     }
     if (this.successes === 5) {
-      const gameData = new GamePlayed(Number(this.categoryId), 1, new Date(), this.currentPoints);
-      this.gamesPointsService.addGamePlayed(gameData);
+      this.endGame();
     }
   }
 
@@ -133,7 +136,28 @@ export class MatchingGameComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+
   navigateToLetsPlay(): void {
     this.router.navigate(['/lets-play']);
+  }
+
+  onTimeLeft(timeLeft: number): void {
+    this.timeLeft = timeLeft;
+    if (this.timeLeft <= 0) {
+      this.endGame();
+    }
+  }
+
+  endGame(): void {
+    const gameData = new GamePlayed(
+      Number(this.categoryId),
+      1,
+      new Date(),
+      this.currentPoints,
+      this.timeLeft,
+      this.gameDuration - this.timeLeft
+    );
+    this.gamesPointsService.addGamePlayed(gameData);
+    this.gameEnd = true;
   }
 }

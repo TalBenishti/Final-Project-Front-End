@@ -40,4 +40,34 @@
             </div>
         </mat-card-content>
     </mat-card>
+    <mat-card class="card-container">
+        <mat-card-title>
+            Average Game Duration
+        </mat-card-title>
+        <mat-card-content>
+            <div>
+                {{ averageGameDuration | number: '1.0-2' }} seconds
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="card-container">
+        <mat-card-title>
+            Total Play Time
+        </mat-card-title>
+        <mat-card-content>
+            <div>
+                {{ totalPlayTime | number: '1.0-0' }} seconds
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="card-container">
+        <mat-card-title>
+            Percentage of Games Ended on Time
+        </mat-card-title>
+        <mat-card-content>
+            <div>
+                {{ percentageGamesEndedOnTime | number: '1.0-2' }}%
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>

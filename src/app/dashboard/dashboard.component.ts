@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GamePlayed } from '../services/gamesPoints.service';
 import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,8 +9,9 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   imports: [
-    MatCardModule
-  ]
+    MatCardModule,
+    CommonModule
+  ],
 })
 export class DashboardComponent implements OnInit {
   gameData: GamePlayed[] = [];
@@ -18,6 +20,9 @@ export class DashboardComponent implements OnInit {
   totalCategoriesLearned: number = 0;
   totalCategoriesNotLearned: number = 0;
   totalCategories: number = 0;
+  averageGameDuration: number = 0;
+  totalPlayTime: number = 0;
+  percentageGamesEndedOnTime: number = 0;
 
   ngOnInit(): void {
     const localStorageGamesData = localStorage.getItem('littleLinguistData');
@@ -37,5 +42,11 @@ export class DashboardComponent implements OnInit {
     this.totalPoints = this.gameData.reduce((total, game) => total + game.points, 0);
     this.totalCategoriesLearned = new Set(this.gameData.map(game => game.categoryId)).size;
     this.totalCategoriesNotLearned = this.totalCategories - this.totalCategoriesLearned;
+    this.totalPlayTime = this.gameData.reduce((total, game) => total + game.secondsPlayed, 0);
+    this.averageGameDuration = this.totalPlayTime / this.totalGamesPlayed;
+
+    const gamesEndedOnTime = this.gameData.filter(game => game.secondsLeftInGame > 0).length;
+    this.percentageGamesEndedOnTime = (gamesEndedOnTime / this.totalGamesPlayed) * 100;
+
   }
 }

@@ -1,5 +1,5 @@
 // import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ExitGameDialogComponent } from '../../shared/dialog/exit-game-dialog/exit-game-dialog.component';
@@ -12,7 +12,6 @@ import { ExitGameDialogComponent } from '../../shared/dialog/exit-game-dialog/ex
   ],
   templateUrl: './exit-game.component.html',
   styleUrl: './exit-game.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExitGameComponent {
 

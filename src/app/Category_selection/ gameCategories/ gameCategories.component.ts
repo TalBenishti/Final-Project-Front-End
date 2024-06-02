@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CategoriesService } from '../../services/categories.service';
 import { Category } from '../../../shared/model/category';
 import { GameCategoryCardComponent } from "../gameCategoryCard/gameCategoryCard.component";
@@ -9,7 +9,6 @@ import { GameCategoryCardComponent } from "../gameCategoryCard/gameCategoryCard.
   standalone: true,
   templateUrl: './ gameCategories.component.html',
   styleUrl: './ gameCategories.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     GameCategoryCardComponent

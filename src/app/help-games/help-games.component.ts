@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-help-games',
@@ -9,6 +9,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   ],
   templateUrl: './help-games.component.html',
   styleUrl: './help-games.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HelpGamesComponent { }
