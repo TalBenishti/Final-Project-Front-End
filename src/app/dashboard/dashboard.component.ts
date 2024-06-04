@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { GamePlayed } from '../services/gamesPoints.service';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { GamePlayed } from '../../shared/model/GamePlayed';
+import { CategoriesService } from '../services/categories.service';
+import { GamesPlayedService } from '../services/gamesPlayed.service';
+import { Category } from '../../shared/model/category';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,29 +27,34 @@ export class DashboardComponent implements OnInit {
   totalPlayTime: number = 0;
   percentageGamesEndedOnTime: number = 0;
 
+  constructor(private categoriesService: CategoriesService, private gamesPlayedService: GamesPlayedService) { }
+
   ngOnInit(): void {
-    const localStorageGamesData = localStorage.getItem('littleLinguistData');
-    const localStorageCategoriesData = localStorage.getItem('categories');
-    if (localStorageCategoriesData) {
-      const tempData = JSON.parse(localStorageCategoriesData);
-      this.totalCategories = tempData.length;
-    }
-    if (localStorageGamesData) {
-      this.gameData = JSON.parse(localStorageGamesData);
-      this.calculateTotals();
-    }
+    this.gamesPlayedService.list()
+      .then((gameResults: GamePlayed[]) => {
+        this.gameData = gameResults;
+        return this.categoriesService.list();
+      })
+      .then((categoryResults: Category[]) => {
+        this.totalCategories = categoryResults.length;
+        this.calculateTotals();
+      })
+      .catch(error => {
+        console.error('Error loading game or category data', error);
+      });
   }
 
-  calculateTotals(): void {
-    this.totalGamesPlayed = this.gameData.length;
-    this.totalPoints = this.gameData.reduce((total, game) => total + game.points, 0);
-    this.totalCategoriesLearned = new Set(this.gameData.map(game => game.categoryId)).size;
-    this.totalCategoriesNotLearned = this.totalCategories - this.totalCategoriesLearned;
-    this.totalPlayTime = this.gameData.reduce((total, game) => total + game.secondsPlayed, 0);
-    this.averageGameDuration = this.totalPlayTime / this.totalGamesPlayed;
 
-    const gamesEndedOnTime = this.gameData.filter(game => game.secondsLeftInGame > 0).length;
-    this.percentageGamesEndedOnTime = (gamesEndedOnTime / this.totalGamesPlayed) * 100;
+calculateTotals(): void {
+  this.totalGamesPlayed = this.gameData.length;
+  this.totalPoints = this.gameData.reduce((total, game) => total + game.points, 0);
+  this.totalCategoriesLearned = new Set(this.gameData.map(game => game.categoryId)).size;
+  this.totalCategoriesNotLearned = this.totalCategories - this.totalCategoriesLearned;
+  this.totalPlayTime = this.gameData.reduce((total, game) => total + game.secondsPlayed, 0);
+  this.averageGameDuration = this.totalPlayTime / this.totalGamesPlayed;
 
-  }
+  const gamesEndedOnTime = this.gameData.filter(game => game.secondsLeftInGame > 0).length;
+  this.percentageGamesEndedOnTime = (gamesEndedOnTime / this.totalGamesPlayed) * 100;
+
+}
 }

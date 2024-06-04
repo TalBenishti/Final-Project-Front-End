@@ -20,21 +20,26 @@ import { DeleteCategoryDialogComponent } from '../delete-category-dialog/delete-
 })
 export class CategoriesListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'numOfWords', 'lastUpdateDate', 'actions'];
-  dataSource: Category[] = [];
+  allCategories: Category[] = [];
 
   constructor(private categoriesService: CategoriesService, private dialogService: MatDialog) { }
 
   ngOnInit(): void {
-    this.dataSource = this.categoriesService.list();
+    this.categoriesService.list()
+    .then((result: Category[]) => (this.allCategories = result));
   }
 
-  deleteCategory(id: number, name: string) {
+  deleteCategory(id: string, name: string) {
     let dialogRef = this.dialogService.open(DeleteCategoryDialogComponent, { data: name });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.categoriesService.delete(id);
-        this.dataSource = this.categoriesService.list();
+        this.categoriesService.delete(id).then(() => {
+          this.categoriesService
+          .list()
+          .then((result: Category[]) => (this.allCategories = result));
+          });
+        ;
       }
     });
   }

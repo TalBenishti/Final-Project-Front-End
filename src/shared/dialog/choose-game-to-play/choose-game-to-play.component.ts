@@ -30,7 +30,6 @@ export class ChooseGameToPlayComponent implements OnInit {
   }
 
   onGameSelectionChange(): void {
-    console.log('Selected Game:', this.selectedGame);
   }
 
 }

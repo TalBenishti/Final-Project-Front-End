@@ -10,8 +10,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { GameResultDialogComponent } from '../../../../shared/dialog/game-result-dialog/game-result-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { GamePlayed, GamesPointsService } from '../../../services/gamesPoints.service';
+import { GamesPlayedService } from '../../../services/gamesPlayed.service';
 import { TimerComponent } from "../../../timer/timer.component";
+import { GamePlayed } from '../../../../shared/model/GamePlayed';
 
 @Component({
   selector: 'app-messy-words-game',
@@ -31,7 +32,7 @@ import { TimerComponent } from "../../../timer/timer.component";
 })
 export class MessyWordsGameComponent implements OnInit {
   @Input() categoryId: string = '';
-  gameWordList: Category | undefined;
+  choosenCategory: Category | undefined;
   shuffledList: Category | undefined;
   shuffledWordList: string[] = [];
   roundPoints: number = 0;
@@ -43,15 +44,22 @@ export class MessyWordsGameComponent implements OnInit {
   timeLeft: number = 0;
   gameEnd: boolean = false;
 
-  constructor(private categoriesService: CategoriesService, private router: Router, private dialog: MatDialog, private gamesPointsService: GamesPointsService) { }
+  constructor(private categoriesService: CategoriesService, private router: Router, private dialog: MatDialog, private gamesPlayedService: GamesPlayedService) { }
 
   ngOnInit(): void {
-    this.gameWordList = this.categoriesService.get(Number(this.categoryId));
-    if (this.gameWordList) {
-      this.shuffledList = { ...this.gameWordList };
-      this.shuffleWordsList();
-      this.roundPoints = Math.floor(100 / this.gameWordList.words.length);
-    }
+    this.categoriesService.get(this.categoryId).then(
+      (categoryFromService) => {
+        if (categoryFromService) {
+          this.choosenCategory = categoryFromService;
+        }
+        if (this.choosenCategory) {
+          this.shuffledList = { ...this.choosenCategory };
+          this.shuffleWordsList();
+          this.roundPoints = Math.floor(100 / this.choosenCategory.words.length);
+        }
+      }
+    );
+    
   }
 
   shuffleWordsList(): void {
@@ -114,7 +122,6 @@ export class MessyWordsGameComponent implements OnInit {
   }
 
   onTimeLeft(timeLeft: number): void {
-    console.log(timeLeft)
     this.timeLeft = timeLeft;
     if (this.timeLeft <= 0) {
       this.endGame();
@@ -123,7 +130,7 @@ export class MessyWordsGameComponent implements OnInit {
 
   endGame(): void {
     const gameData = new GamePlayed(
-      Number(this.categoryId),
+      this.categoryId,
       2,
       new Date(),
       this.currentPoints,
@@ -131,6 +138,6 @@ export class MessyWordsGameComponent implements OnInit {
       this.gameDuration - this.timeLeft
     );
     this.gameEnd=true;
-    this.gamesPointsService.addGamePlayed(gameData);
+    this.gamesPlayedService.addGamePlayed(gameData);
   }
 }

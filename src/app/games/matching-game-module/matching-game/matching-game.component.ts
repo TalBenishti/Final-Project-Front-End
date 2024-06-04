@@ -11,8 +11,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { GameResultDialogComponent } from '../../../../shared/dialog/game-result-dialog/game-result-dialog.component';
 import { CurrentPointsComponent } from '../../../current-points/current-points.component';
-import { GamePlayed, GamesPointsService } from '../../../services/gamesPoints.service';
+import { GamesPlayedService } from '../../../services/gamesPlayed.service';
 import { TimerComponent } from "../../../timer/timer.component";
+import { GamePlayed } from '../../../../shared/model/GamePlayed';
 
 @Component({
   selector: 'app-matching-game',
@@ -31,7 +32,7 @@ import { TimerComponent } from "../../../timer/timer.component";
 })
 export class MatchingGameComponent implements OnInit {
   @Input() categoryId: string = '';
-  gameWordList: Category | undefined;
+  choosenCategory: Category | undefined;
   fiveRandomPairCards: TranslatedWord[] = [];
   targetWords: string[] = new Array(5);
   sourceWordStatuses: WordStatus[] = new Array(5).fill(WordStatus.Normal);
@@ -46,22 +47,29 @@ export class MatchingGameComponent implements OnInit {
   timeLeft: number = 0;
   gameEnd: boolean = false;
 
-  constructor(private categoriesService: CategoriesService, private router: Router, private dialog: MatDialog, private gamesPointsService: GamesPointsService) { }
+  constructor(private categoriesService: CategoriesService, private router: Router, private dialog: MatDialog, private gamesPlayedService: GamesPlayedService) { }
 
   ngOnInit(): void {
-    this.gameWordList = this.categoriesService.get(Number(this.categoryId));
-    if (this.gameWordList && this.gameWordList.words.length >= 5) {
-      this.createWordsLists()
-    }
+    this.categoriesService.get(this.categoryId).then(
+      (categoryFromService) => {
+        if (categoryFromService) {
+          this.choosenCategory = categoryFromService;
+        }
+        if (this.choosenCategory && this.choosenCategory.words.length >= 5) {
+          this.createWordsLists()
+        }
+      }
+    );
+
   }
 
   createWordsLists() {
     let usedIndices: number[] = [];
-    const size = this.gameWordList?.words.length || 0;
+    const size = this.choosenCategory?.words.length || 0;
     while (this.fiveRandomPairCards.length < 5) {
       const randomIndex = Math.floor(Math.random() * size);
       if (!usedIndices.includes(randomIndex)) {
-        const randomPair = this.gameWordList?.words[randomIndex];
+        const randomPair = this.choosenCategory?.words[randomIndex];
         if (randomPair) {
           this.fiveRandomPairCards.push(randomPair);
           usedIndices.push(randomIndex);
@@ -150,14 +158,14 @@ export class MatchingGameComponent implements OnInit {
 
   endGame(): void {
     const gameData = new GamePlayed(
-      Number(this.categoryId),
+      this.categoryId,
       1,
       new Date(),
       this.currentPoints,
       this.timeLeft,
       this.gameDuration - this.timeLeft
     );
-    this.gamesPointsService.addGamePlayed(gameData);
+    this.gamesPlayedService.addGamePlayed(gameData);
     this.gameEnd = true;
   }
 }

@@ -31,7 +31,6 @@ export class GameCategoryCardComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 }

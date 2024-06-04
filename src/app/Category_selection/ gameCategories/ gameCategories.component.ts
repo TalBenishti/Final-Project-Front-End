@@ -20,6 +20,6 @@ export class GameCategoriesComponent implements OnInit {
   constructor(private categoriesService: CategoriesService) { }
 
   ngOnInit(): void {
-    this.allGameCategories = this.categoriesService.list()
-  }
+    this.categoriesService.list()
+    .then((result: Category[]) => (this.allGameCategories = result));  }
 }

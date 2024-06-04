@@ -7,7 +7,7 @@
         <app-timer *ngIf="!gameEnd" [duration]="gameDuration" (reportTimeLeft)="onTimeLeft($event)"></app-timer>
     </div>
     <div class="centered">
-        <h1>Messy Words Game - {{ gameWordList?.name }}</h1>
+        <h1>Messy Words Game - {{ choosenCategory?.name }}</h1>
     </div>
     <div *ngIf="shuffledList && !gameEnd">
 
